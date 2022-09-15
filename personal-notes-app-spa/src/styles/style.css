@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+@layer base {
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Inter", sans-serif;
+    color: #ffffff;
+    background-color: #121212;
+    min-height: 100vh;
+    transition: all ease-in-out 0.5s;
+    width: 100%;
+  }
+
+  main {
+    @apply my-0 mx-auto py-8 px-0 w-full max-w-[1200px];
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .notes-list {
+    @apply grid grid-cols-2;
+  }
+
+  .detail-page__title {
+    @apply text-[64px];
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .notes-list {
+    @apply grid grid-cols-3;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .notes-list {
+    @apply grid grid-cols-4;
+  }
+}
+
+[contenteditable][placeholder]:empty:before {
+  content: attr(placeholder);
+  position: absolute;
+  color: gray;
+  background-color: transparent;
+}
