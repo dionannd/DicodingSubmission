@@ -71,7 +71,6 @@ class HomePage extends React.Component {
                 <SearchBar
                   query={this.state.query}
                   valueChange={this.onValueChangeHandler}
-                  locale={locale}
                 />
                 <NoteList notes={notes} />
                 <div className="fixed flex gap-4 bottom-8 right-8">

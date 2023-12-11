@@ -1,19 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { LocaleConsumer } from "../contexts/LocaleContext";
+import ThemeContext from "../contexts/ThemeContext";
 
-function SearchBar({ query, valueChange, locale }) {
+function SearchBar({ query, valueChange }) {
+  const { theme } = React.useContext(ThemeContext);
+
   return (
-    <section>
-      <input
-        className="bg-[#121212] text-sm border border-white rounded text-white my-4 p-2 w-full focus:ring-0 focus:outline-none placeholder:text-gray-500"
-        type="text"
-        placeholder={
-          locale === "id" ? "Cari berdasarkan judul..." : "Search by title..."
-        }
-        value={query}
-        onChange={(event) => valueChange(event.target.value)}
-      />
-    </section>
+    <LocaleConsumer>
+      {({ locale }) => (
+        <section>
+          <input
+            className={`w-full p-2 my-4 text-sm  bg-transparent border  rounded focus:ring-0 focus:outline-none placeholder:text-gray-500 ${
+              theme === "dark" ? "border-white" : "border-[#121212]"
+            }`}
+            type="text"
+            placeholder={
+              locale === "id"
+                ? "Cari berdasarkan judul ..."
+                : "Search by title ..."
+            }
+            value={query}
+            onChange={(event) => valueChange(event.target.value)}
+          />
+        </section>
+      )}
+    </LocaleConsumer>
   );
 }
 

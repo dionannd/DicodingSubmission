@@ -12,7 +12,7 @@ function NoteDetail({ title, createdAt, body }) {
           <h3 className="detail-page__title text-[40px] mb-2 break-words font-semibold">
             {title}
           </h3>
-          <p className="text-gray-300">
+          <p className="text-gray-500">
             {showFormattedDate(createdAt, locale === "id" ? "id-ID" : "en-EN")}
           </p>
           <div className="text-lg leading-normal mt-9">{parser(body)}</div>

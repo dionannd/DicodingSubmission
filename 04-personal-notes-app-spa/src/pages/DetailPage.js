@@ -83,7 +83,7 @@ class DetailPage extends React.Component {
           <div className="flex items-center justify-center w-full mt-8">
             <h2 className="text-lg text-gray-300">Loading...</h2>
           </div>
-        ) : (
+        ) : this.state.notes !== undefined ? (
           <>
             <NoteDetail {...this.state.notes} loading={this.state.loading} />
             <div className="fixed flex gap-4 bottom-8 right-8">
@@ -99,8 +99,7 @@ class DetailPage extends React.Component {
               />
             </div>
           </>
-        )}
-        {this.state.notes === undefined && !this.state.loading && (
+        ) : (
           <PageNotFound />
         )}
       </>

@@ -3,21 +3,16 @@ import { useSearchParams } from "react-router-dom";
 import NoteArchiveList from "../components/NoteArchiveList";
 import SearchBar from "../components/SearchBar";
 import { getArchivedNotes } from "../utils/api";
+import { LocaleConsumer } from "../contexts/LocaleContext";
 
-function ArchivePageWrapper({ locale }) {
+function ArchivePageWrapper() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("query");
   function changeSearchParams(query) {
     setSearchParams({ query });
   }
 
-  return (
-    <ArchivePage
-      defaultValue={query}
-      valueChange={changeSearchParams}
-      locale={locale}
-    />
-  );
+  return <ArchivePage defaultValue={query} valueChange={changeSearchParams} />;
 }
 
 class ArchivePage extends React.Component {
@@ -66,21 +61,20 @@ class ArchivePage extends React.Component {
             <h2 className="text-lg text-gray-300">Loading...</h2>
           </div>
         ) : (
-          <>
-            <section>
-              <h2 className="text-2xl font-medium">
-                {this.props.locale === "id"
-                  ? "Catatan Arsip"
-                  : "Archived Notes"}
-              </h2>
-              <SearchBar
-                query={this.state.query}
-                valueChange={this.onValueChangeHandler}
-                locale={this.props.locale}
-              />
-              <NoteArchiveList notes={notes} locale={this.props.locale} />
-            </section>
-          </>
+          <LocaleConsumer>
+            {({ locale }) => (
+              <section>
+                <h2 className="text-2xl font-medium">
+                  {locale === "id" ? "Catatan Arsip" : "Archived Notes"}
+                </h2>
+                <SearchBar
+                  query={this.state.query}
+                  valueChange={this.onValueChangeHandler}
+                />
+                <NoteArchiveList notes={notes} />
+              </section>
+            )}
+          </LocaleConsumer>
         )}
       </>
     );

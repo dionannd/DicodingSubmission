@@ -103,7 +103,13 @@ class App extends React.Component {
         <LocaleProvider value={this.state.localeContext}>
           <ThemeProvider value={this.state.themeContext}>
             <div className="min-h-screen transition-all ease-in-out duration-[50ms]">
-              <header className="flex items-center justify-between px-6 py-4 border-b border-white">
+              <header
+                className={`flex items-center justify-between px-6 py-4 border-b ${
+                  this.state.themeContext.theme === "dark"
+                    ? "border-white"
+                    : "border-[#121212]"
+                }`}
+              >
                 <h1 className="flex-1 text-3xl font-semibold">
                   {this.state.localeContext.locale === "id"
                     ? "Aplikasi Catatan"
@@ -124,23 +130,9 @@ class App extends React.Component {
                 <Routes>
                   <Route
                     path="/*"
-                    element={
-                      <LoginPage
-                        loginSuccess={this.onLoginSuccess}
-                        locale={this.state.localeContext.locale}
-                        theme={this.state.theme}
-                      />
-                    }
+                    element={<LoginPage loginSuccess={this.onLoginSuccess} />}
                   />
-                  <Route
-                    path="/register"
-                    element={
-                      <RegisterPage
-                        locale={this.state.localeContext.locale}
-                        theme={this.state.theme}
-                      />
-                    }
-                  />
+                  <Route path="/register" element={<RegisterPage />} />
                 </Routes>
               </main>
             </div>
@@ -152,8 +144,14 @@ class App extends React.Component {
     return (
       <LocaleProvider value={this.state.localeContext}>
         <ThemeProvider value={this.state.themeContext}>
-          <div className="text-white bg-[#121212] min-h-screen transition-all ease-in-out duration-[50ms] data-[theme=dark]:text-black data-[theme=dark]:bg-[#ddd]">
-            <header className="flex items-center justify-between px-6 py-4 border-b border-white">
+          <div className=" min-h-screen transition-all ease-in-out duration-[50ms]">
+            <header
+              className={`flex items-center justify-between px-6 py-4 border-b ${
+                this.state.themeContext.theme === "dark"
+                  ? "border-white"
+                  : "border-[#121212]"
+              }`}
+            >
               <h1 className="flex-1 text-3xl font-semibold">
                 {this.state.localeContext.locale === "id"
                   ? "Aplikasi Catatan"
@@ -162,24 +160,12 @@ class App extends React.Component {
               <Navigation
                 logout={this.onLogout}
                 name={this.state.authedUser.name}
-                locale={this.state.localeContext.locale}
-                toggleLocale={this.state.localeContext.toggleLocale}
               />
             </header>
             <main>
               <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <HomePage locale={this.state.localeContext.locale} />
-                  }
-                />
-                <Route
-                  path="/archives"
-                  element={
-                    <ArchivePage locale={this.state.localeContext.locale} />
-                  }
-                />
+                <Route path="/" element={<HomePage />} />
+                <Route path="/archives" element={<ArchivePage />} />
                 <Route
                   path="/notes/new"
                   element={<AddPage locale={this.state.localeContext.locale} />}

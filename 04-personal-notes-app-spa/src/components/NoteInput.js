@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ButtonSubmit from "./ButtonSubmit";
+import { LocaleConsumer } from "../contexts/LocaleContext";
 
 class NoteInput extends React.Component {
   constructor(props) {
@@ -54,30 +55,30 @@ class NoteInput extends React.Component {
 
   render() {
     return (
-      <div className="mt-8">
-        <input
-          type="text"
-          placeholder={
-            this.props.locale === "id" ? "Judul Catatan" : "Title Note"
-          }
-          className="border-0 text-white bg-[#121212] text-6xl font-bold py-2 w-full focus:outline-none focus:ring-0"
-          value={this.state.title}
-          onChange={this.onTitleChangeEventHandler}
-        />
+      <LocaleConsumer>
+        {({ locale }) => (
+          <div className="mt-8">
+            <input
+              type="text"
+              placeholder={locale === "id" ? "Judul Catatan" : "Title Note"}
+              className="w-full py-2 text-[#333] text-6xl font-bold bg-transparent border-0 focus:outline-none focus:ring-0"
+              value={this.state.title}
+              onChange={this.onTitleChangeEventHandler}
+            />
 
-        <div
-          className="bg-[#121212] rounded-lg focus:outline-none text-white text-2xl min-h-[500px] p-2 w-full"
-          placeholder={
-            this.props.locale === "id" ? "Isi Catatan..." : "Body Note..."
-          }
-          contentEditable
-          suppressContentEditableWarning
-          onInput={this.onBodyChangeEventHandler}
-        />
-        <div className="fixed flex gap-4 bottom-8 right-8">
-          <ButtonSubmit onSubmit={this.onSubmitEventHandler} />
-        </div>
-      </div>
+            <div
+              className="bg-transparent text-[#333] rounded-lg focus:outline-none text-2xl min-h-[500px] p-2 w-full"
+              placeholder={locale === "id" ? "Isi Catatan..." : "Body Note..."}
+              contentEditable
+              suppressContentEditableWarning
+              onInput={this.onBodyChangeEventHandler}
+            />
+            <div className="fixed flex gap-4 bottom-8 right-8">
+              <ButtonSubmit onSubmit={this.onSubmitEventHandler} />
+            </div>
+          </div>
+        )}
+      </LocaleConsumer>
     );
   }
 }

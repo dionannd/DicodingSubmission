@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NoteInput from "../components/NoteInput";
 import { addNote } from "../utils/api";
 
-function AddPage({ locale }) {
+function AddPage() {
   const navigate = useNavigate();
 
   async function onAddNoteHandler(note) {
@@ -13,7 +13,7 @@ function AddPage({ locale }) {
 
   return (
     <section>
-      <NoteInput addNote={onAddNoteHandler} locale={locale} />
+      <NoteInput addNote={onAddNoteHandler} />
     </section>
   );
 }
