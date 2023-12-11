@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import ToggleTheme from "./ToggleTheme";
 
 function Navigation() {
   const location = useLocation();
@@ -7,6 +8,9 @@ function Navigation() {
   return (
     <nav className="flex items-center text-[22px]">
       <ul className="flex space-x-3">
+        <li>
+          <ToggleTheme />
+        </li>
         <li>
           <Link to={location.pathname === "/" ? "/archives" : "/"}>
             <h1 className="flex-1 underline underline-offset-4">
