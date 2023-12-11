@@ -5,12 +5,12 @@ import NoteItem from "./NoteItem";
 function NoteList({ notes }) {
   return (
     <>
-      {!notes.length ? (
-        <div className="w-full flex items-center justify-center mt-8">
-          <h2 className="text-lg text-gray-300">Tidak ada catatan</h2>
+      {notes.length < 1 ? (
+        <div className="flex items-center justify-center w-full mt-8">
+          <h2 className="text-lg ">Tidak ada catatan</h2>
         </div>
       ) : (
-        <section className="notes-list grid grid-cols-4 mt-8 py-4 px-2 gap-4">
+        <section className="grid grid-cols-4 gap-4 px-2 py-4 mt-8 notes-list">
           {notes.length &&
             notes.map((note) => (
               <NoteItem key={note.id} id={note.id} {...note} />

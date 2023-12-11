@@ -4,22 +4,40 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
+:root {
+  --font-color: #121212;
+  --background-color: #ddd;
+}
+
+[data-theme="dark"] {
+  --font-color: #eee;
+  --background-color: #121212;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  transition: background 0.3s ease-in;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--background-color);
+  color: var(--font-color);
+  min-height: 100vh;
+  transition: all ease-in-out 0.5s;
+  width: 100%;
+}
+
+button {
+  background-color: transparent;
+  color: var(--font-color);
+  border: 0;
+  cursor: pointer;
+}
+
 @layer base {
-  * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: "Inter", sans-serif;
-    color: #ffffff;
-    background-color: #121212;
-    min-height: 100vh;
-    transition: all ease-in-out 0.5s;
-    width: 100%;
-  }
-
   main {
     @apply my-0 mx-auto py-8 px-0 w-full max-w-[1200px];
   }

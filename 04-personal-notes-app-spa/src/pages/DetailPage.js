@@ -2,14 +2,8 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ButtonArchive from "../components/ButtonArchive";
 import ButtonDelete from "../components/ButtonDelete";
-import ButtonEdit from "../components/ButtonEdit";
 import NoteDetail from "../components/NoteDetail";
-import {
-  archiveNote,
-  deleteNote,
-  getNote,
-  unarchiveNote,
-} from "../utils/local-data";
+import { archiveNote, deleteNote, getNote, unarchiveNote } from "../utils/api";
 import PageNotFound from "./404Page";
 
 function DetailPageWrapper() {
@@ -24,7 +18,8 @@ class DetailPage extends React.Component {
     super(props);
 
     this.state = {
-      notes: getNote(props.id),
+      notes: undefined,
+      loading: true,
     };
 
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
@@ -32,29 +27,51 @@ class DetailPage extends React.Component {
     this.onUnarchiveHandler = this.onUnarchiveHandler.bind(this);
   }
 
-  onArchiveHandler(id) {
+  async onArchiveHandler(id) {
+    await archiveNote(id);
     this.props.navigate("/");
 
-    this.setState({
-      notes: archiveNote(id),
+    const { data } = this.state.notes;
+    this.setState(() => {
+      return {
+        notes: data,
+        loading: false,
+      };
     });
   }
 
-  onUnarchiveHandler(id) {
+  async onUnarchiveHandler(id) {
+    await unarchiveNote(id);
     this.props.navigate("/archives");
 
-    this.setState({
-      notes: unarchiveNote(id),
+    const { data } = this.state.notes;
+    this.setState(() => {
+      return {
+        notes: data,
+        loading: false,
+      };
     });
   }
 
-  onDeleteHandler(id) {
-    deleteNote(id);
+  async onDeleteHandler(id) {
+    await deleteNote(id);
     this.props.navigate(this.state.notes.archived !== true ? "/" : "/archives");
+
+    const { data } = this.state.notes;
+    this.setState(() => {
+      return {
+        notes: data,
+      };
+    });
+  }
+
+  async componentDidMount() {
+    const { data } = await getNote(this.props.id);
 
     this.setState(() => {
       return {
-        notes: getNote(id),
+        notes: data,
+        loading: false,
       };
     });
   }
@@ -62,13 +79,14 @@ class DetailPage extends React.Component {
   render() {
     return (
       <>
-        {this.state.notes === undefined ? (
-          <PageNotFound />
+        {this.state.loading ? (
+          <div className="flex items-center justify-center w-full mt-8">
+            <h2 className="text-lg text-gray-300">Loading...</h2>
+          </div>
         ) : (
           <>
-            <NoteDetail {...this.state.notes} />
-            <div className="bottom-8 flex gap-4 fixed right-8">
-              <ButtonEdit id={this.state.notes.id} />
+            <NoteDetail {...this.state.notes} loading={this.state.loading} />
+            <div className="fixed flex gap-4 bottom-8 right-8">
               <ButtonArchive
                 notes={this.state.notes.archived}
                 id={this.state.notes.id}
@@ -81,6 +99,9 @@ class DetailPage extends React.Component {
               />
             </div>
           </>
+        )}
+        {this.state.notes === undefined && !this.state.loading && (
+          <PageNotFound />
         )}
       </>
     );

@@ -3,18 +3,25 @@ import parser from "html-react-parser";
 import PropTypes from "prop-types";
 import { isTruncate, isTruncateTitle, showFormattedDate } from "../utils";
 import { Link } from "react-router-dom";
+import { LocaleConsumer } from "../contexts/LocaleContext";
 
 function NoteArchiveItem({ title, body, createdAt, id }) {
   return (
-    <article className="border border-white rounded-lg p-4 border-t-4">
-      <h3 className="text-lg font-semibold underline underline-offset-4">
-        <Link to={`/notes/${id}`}>{isTruncateTitle(title)}</Link>
-      </h3>
-      <p className="text-sm text-gray-300">{showFormattedDate(createdAt)}</p>
-      <p className="mt-4 overflow-hidden text-ellipsis leading-tight">
-        {parser(isTruncate(body))}
-      </p>
-    </article>
+    <LocaleConsumer>
+      {({ locale }) => (
+        <article className="p-4 border border-t-4 border-white rounded-lg">
+          <h3 className="text-lg font-semibold underline underline-offset-4">
+            <Link to={`/notes/${id}`}>{isTruncateTitle(title)}</Link>
+          </h3>
+          <p className="text-sm text-gray-300">
+            {showFormattedDate(createdAt, locale === "id" ? "id-ID" : "en-EN")}
+          </p>
+          <p className="mt-4 overflow-hidden leading-tight text-ellipsis">
+            {parser(isTruncate(body))}
+          </p>
+        </article>
+      )}
+    </LocaleConsumer>
   );
 }
 

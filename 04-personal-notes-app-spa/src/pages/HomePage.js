@@ -3,7 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import ButtonAdd from "../components/ButtonAdd";
 import NoteList from "../components/NoteList";
 import SearchBar from "../components/SearchBar";
-import { getActiveNotes } from "../utils/local-data";
+import { getActiveNotes } from "../utils/api";
+import { LocaleConsumer } from "../contexts/LocaleContext";
 
 function HomePageWrapper() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,8 +21,9 @@ class HomePage extends React.Component {
     super(props);
 
     this.state = {
-      notes: getActiveNotes(),
+      notes: [],
       query: "",
+      loading: true,
     };
 
     this.onValueChangeHandler = this.onValueChangeHandler.bind(this);
@@ -37,23 +39,49 @@ class HomePage extends React.Component {
     this.props.valueChange(query);
   }
 
+  async componentDidMount() {
+    const { data } = await getActiveNotes();
+
+    this.setState(() => {
+      return {
+        notes: data,
+        loading: false,
+      };
+    });
+  }
+
   render() {
     const notes = this.state.notes.filter((note) => {
       return note.title.toLowerCase().includes(this.state.query.toLowerCase());
     });
 
     return (
-      <section>
-        <h2 className="text-2xl font-medium">Catatan Aktif</h2>
-        <SearchBar
-          query={this.state.query}
-          valueChange={this.onValueChangeHandler}
-        />
-        <NoteList notes={notes} />
-        <div className="bottom-8 flex gap-4 fixed right-8">
-          <ButtonAdd />
-        </div>
-      </section>
+      <>
+        {this.state.loading ? (
+          <div className="flex items-center justify-center w-full mt-8">
+            <h2 className="text-lg ">Loading...</h2>
+          </div>
+        ) : (
+          <LocaleConsumer>
+            {({ locale }) => (
+              <section>
+                <h2 className="text-2xl font-medium">
+                  {locale === "id" ? "Catatan Aktif" : "Active Notes"}
+                </h2>
+                <SearchBar
+                  query={this.state.query}
+                  valueChange={this.onValueChangeHandler}
+                  locale={locale}
+                />
+                <NoteList notes={notes} />
+                <div className="fixed flex gap-4 bottom-8 right-8">
+                  <ButtonAdd />
+                </div>
+              </section>
+            )}
+          </LocaleConsumer>
+        )}
+      </>
     );
   }
 }

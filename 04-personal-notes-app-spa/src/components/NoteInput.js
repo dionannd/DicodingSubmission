@@ -43,6 +43,12 @@ class NoteInput extends React.Component {
 
   onSubmitEventHandler(event) {
     event.preventDefault();
+
+    if (this.state.title === "") {
+      alert("Judul tidak boleh kosong");
+      return;
+    }
+
     this.props.addNote(this.state);
   }
 
@@ -51,7 +57,9 @@ class NoteInput extends React.Component {
       <div className="mt-8">
         <input
           type="text"
-          placeholder="Judul Catatan"
+          placeholder={
+            this.props.locale === "id" ? "Judul Catatan" : "Title Note"
+          }
           className="border-0 text-white bg-[#121212] text-6xl font-bold py-2 w-full focus:outline-none focus:ring-0"
           value={this.state.title}
           onChange={this.onTitleChangeEventHandler}
@@ -59,12 +67,14 @@ class NoteInput extends React.Component {
 
         <div
           className="bg-[#121212] rounded-lg focus:outline-none text-white text-2xl min-h-[500px] p-2 w-full"
-          placeholder="Isi Catatan...."
+          placeholder={
+            this.props.locale === "id" ? "Isi Catatan..." : "Body Note..."
+          }
           contentEditable
           suppressContentEditableWarning
           onInput={this.onBodyChangeEventHandler}
         />
-        <div className="bottom-8 flex gap-4 fixed right-8">
+        <div className="fixed flex gap-4 bottom-8 right-8">
           <ButtonSubmit onSubmit={this.onSubmitEventHandler} />
         </div>
       </div>

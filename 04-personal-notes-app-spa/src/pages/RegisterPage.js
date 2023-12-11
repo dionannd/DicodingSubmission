@@ -1,19 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import RegisterInput from "../components/InputRegister";
+import { Link, useNavigate } from "react-router-dom";
+import InputRegister from "../components/InputRegister";
 import { register } from "../utils/api";
 
-function RegisterPage() {
+function RegisterPage({ locale }) {
+  const navigate = useNavigate();
+
   async function onRegisterHandler(user) {
-    await register(user);
+    const { error } = await register(user);
+
+    if (!error) {
+      navigate("/");
+    }
   }
 
   return (
     <section className="">
-      <h2>Isi form untuk membuat akun anda</h2>
-      <RegisterInput register={onRegisterHandler} />
-      <p>
-        Sudah punya akun? <Link to="/">Login disini</Link>
+      <h2 className="block mb-6 text-xl font-bold">
+        {locale === "id"
+          ? "Isi form untuk membuat akun anda"
+          : "Fill in the form to create an account"}
+      </h2>
+      <InputRegister register={onRegisterHandler} />
+      <p className="mt-6">
+        {locale === "id" ? "Sudah punya akun" : "Already have an account"}?{" "}
+        <Link to="/" className="underline">
+          {locale === "id" ? "Login disini" : "Login here"}
+        </Link>
       </p>
     </section>
   );
