@@ -38,9 +38,13 @@ class App extends React.Component {
         },
       },
       localeContext: {
-        locale: "id",
+        locale: localStorage.getItem("locale") || "id",
         toggleLocale: () => {
           this.setState((prevState) => {
+            localStorage.setItem(
+              "locale",
+              prevState.localeContext.locale === "id" ? "en" : "id"
+            );
             return {
               localeContext: {
                 ...prevState.localeContext,
