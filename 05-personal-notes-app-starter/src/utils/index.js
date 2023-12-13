@@ -8,7 +8,7 @@
  * @returns
  */
 
-const showFormattedDate = (date, locale) => {
+const showFormattedDate = (date, locale = "id-ID") => {
   const options = {
     weekday: "long",
     year: "numeric",
